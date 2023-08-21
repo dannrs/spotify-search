@@ -40,12 +40,12 @@ export default function Home() {
   return (
     <main className='container flex flex-col items-center justify-center gap-4 pt-4 md:max-w-[60rem]'>
       <h1 className='text-xl font-semibold'>Spotify Search</h1>
-      <div className='flex items-center justify-center gap-2'>
+      <div className='flex items-center justify-center gap-2 w-full'>
         <Input
           type='text'
           placeholder='Search...'
           value={searchQuery}
-          className='w-[16.5rem] md:w-[30rem]'
+          className='w-3/4 md:w-[87%] lg:w-[90%]'
           onChange={e => setSearchQuery(e.target.value)}
         />
         <Select
@@ -53,7 +53,7 @@ export default function Home() {
           onValueChange={setSearchType}
           onOpenChange={setIsDropdownOpen}
         >
-          <SelectTrigger className='w-24 md:w-32'>
+          <SelectTrigger className='w-1/4 md:w-[13%] lg:w-[10%]'>
             <SelectValue placeholder='Select a type' />
           </SelectTrigger>
           <SelectContent>
@@ -71,7 +71,7 @@ export default function Home() {
           ) : (
             <div
               className={cn(
-                'grid grid-cols-2 gap-4 pb-8 md:grid-cols-4',
+                'grid grid-cols-2 gap-4 pb-8 md:grid-cols-3 lg:grid-cols-4',
                 isDropdownOpen ? 'pointer-events-none' : 'pointer-events-auto'
               )}
             >
@@ -80,12 +80,19 @@ export default function Home() {
                   key={index}
                   className='relative flex flex-col rounded-sm bg-accent p-4'
                 >
-                  <Image
-                    src={result.image}
-                    alt={result.name}
-                    width={640}
-                    height={640}
-                  />
+                  {result.image ? (
+                    <Image
+                      unoptimized
+                      src={result.image}
+                      alt={result.name}
+                      width={640}
+                      height={640}
+                    />
+                  ) : (
+                    <div className='flex justify-center items-center h-[180px] w-[180px] bg-[#E5E9ED]'>
+                      {result.name}
+                    </div>
+                  )}
                   <p className='pt-4 text-lg font-semibold'>{result.name}</p>
                   <p className='text-foreground/80'>
                     {result.type.charAt(0).toUpperCase() + result.type.slice(1)}
