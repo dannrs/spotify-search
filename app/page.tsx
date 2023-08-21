@@ -13,11 +13,12 @@ import {
 } from '@/components/ui/select'
 import JaroWinkler from '@/lib/jaro'
 import { Result } from '@/lib/types'
-import { fetcher } from '@/lib/utils'
+import { cn, fetcher } from '@/lib/utils'
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [searchType, setSearchType] = useState<string>('track')
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
   const { data: searchResults, error } = useSWR(
     searchQuery ? `/api/search?q=${searchQuery}&type=${searchType}` : null,
     fetcher
@@ -47,23 +48,19 @@ export default function Home() {
           className='w-[16.5rem] md:w-[30rem]'
           onChange={e => setSearchQuery(e.target.value)}
         />
-        <Select defaultValue='track' onValueChange={setSearchType}>
+        <Select
+          defaultValue='track'
+          onValueChange={setSearchType}
+          onOpenChange={setIsDropdownOpen}
+        >
           <SelectTrigger className='w-24 md:w-32'>
             <SelectValue placeholder='Select a type' />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='album' onClick={e => e.stopPropagation()}>
-              Album
-            </SelectItem>
-            <SelectItem value='artist' onClick={e => e.stopPropagation()}>
-              Artist
-            </SelectItem>
-            <SelectItem value='playlist' onClick={e => e.stopPropagation()}>
-              Playlist
-            </SelectItem>
-            <SelectItem value='track' onClick={e => e.stopPropagation()}>
-              Track
-            </SelectItem>
+            <SelectItem value='album'>Album</SelectItem>
+            <SelectItem value='artist'>Artist</SelectItem>
+            <SelectItem value='playlist'>Playlist</SelectItem>
+            <SelectItem value='track'>Track</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -72,7 +69,12 @@ export default function Home() {
           {!sortedResults ? (
             <div>Loading...</div>
           ) : (
-            <div className='grid grid-cols-2 gap-4 pb-8 md:grid-cols-4'>
+            <div
+              className={cn(
+                'grid grid-cols-2 gap-4 pb-8 md:grid-cols-4',
+                isDropdownOpen ? 'pointer-events-none' : 'pointer-events-auto'
+              )}
+            >
               {sortedResults.map((result: Result, index: number) => (
                 <div
                   key={index}
