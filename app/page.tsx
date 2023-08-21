@@ -78,7 +78,7 @@ export default function Home() {
                       width={640}
                       height={640}
                     />
-                    <p className='pt-4 text-lg'>{result.name}</p>
+                    <p className='pt-4 text-lg font-semibold'>{result.name}</p>
                     <p className='text-foreground/80'>
                       {result.type.charAt(0).toUpperCase() +
                         result.type.slice(1)}
