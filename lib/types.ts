@@ -1,7 +1,7 @@
 export interface Result {
   name: string
   image: string
-  url: string
+  uri: string
   type: string
   similarity: number
 }

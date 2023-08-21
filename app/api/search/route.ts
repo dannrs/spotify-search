@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
     return {
       name: item.name,
       image: imageUrl,
-      url: item.external_urls.spotify,
+      uri: item.uri,
       type: item.type
     }
   })
