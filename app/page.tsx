@@ -38,65 +38,62 @@ export default function Home() {
     .map(({ name, image, url, type }: Result) => ({ name, image, url, type }))
 
   return (
-    <main className='max-w-[60rem] py-4'>
-      <section className='flex flex-col items-center justify-center gap-4'>
-        <h1 className='text-xl font-semibold'>Spotify Search</h1>
-        <div className='flex items-center justify-center gap-2'>
-          <Input
-            type='text'
-            placeholder='Search...'
-            value={searchQuery}
-            className='w-[30rem]'
-            onChange={e => setSearchQuery(e.target.value)}
-          />
-          <Select defaultValue='artist' onValueChange={setSearchType}>
-            <SelectTrigger className='w-32'>
-              <SelectValue placeholder='Select a type' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='album'>Album</SelectItem>
-              <SelectItem value='artist'>Artist</SelectItem>
-              <SelectItem value='playlist'>Playlist</SelectItem>
-              <SelectItem value='track'>Track</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        {searchQuery && (
-          <>
-            {!sortedResults ? (
-              <div>Loading...</div>
-            ) : (
-              <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
-                {sortedResults.map((result: Result, index: number) => (
-                  <div
-                    key={index}
-                    className='relative flex flex-col rounded-sm bg-accent p-4'
+    <main className='container flex flex-col items-center justify-center gap-4 md:max-w-[60rem] bg-sky-600 pt-4'>
+      <h1 className='text-xl font-semibold'>Spotify Search</h1>
+      <div className='flex items-center justify-center gap-2'>
+        <Input
+          type='text'
+          placeholder='Search...'
+          value={searchQuery}
+          className='w-[19.5rem] md:w-[30rem]'
+          onChange={e => setSearchQuery(e.target.value)}
+        />
+        <Select defaultValue='artist' onValueChange={setSearchType}>
+          <SelectTrigger className='w-24 md:w-32'>
+            <SelectValue placeholder='Select a type' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value='album'>Album</SelectItem>
+            <SelectItem value='artist'>Artist</SelectItem>
+            <SelectItem value='playlist'>Playlist</SelectItem>
+            <SelectItem value='track'>Track</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      {searchQuery && (
+        <>
+          {!sortedResults ? (
+            <div>Loading...</div>
+          ) : (
+            <div className='grid grid-cols-2 gap-4 md:grid-cols-4 pb-8'>
+              {sortedResults.map((result: Result, index: number) => (
+                <div
+                  key={index}
+                  className='relative flex flex-col rounded-sm bg-accent p-4'
+                >
+                  <Image
+                    src={result.image}
+                    alt={result.name}
+                    width={640}
+                    height={640}
+                  />
+                  <p className='pt-4 text-lg font-semibold'>{result.name}</p>
+                  <p className='text-foreground/80'>
+                    {result.type.charAt(0).toUpperCase() + result.type.slice(1)}
+                  </p>
+                  <Link
+                    href={result.url}
+                    target='_blank'
+                    className='absolute inset-0'
                   >
-                    <Image
-                      src={result.image}
-                      alt={result.name}
-                      width={640}
-                      height={640}
-                    />
-                    <p className='pt-4 text-lg font-semibold'>{result.name}</p>
-                    <p className='text-foreground/80'>
-                      {result.type.charAt(0).toUpperCase() +
-                        result.type.slice(1)}
-                    </p>
-                    <Link
-                      href={result.url}
-                      target='_blank'
-                      className='absolute inset-0'
-                    >
-                      <span className='sr-only'>Open on Spotify</span>
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        )}
-      </section>
+                    <span className='sr-only'>Open on Spotify</span>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
     </main>
   )
 }
