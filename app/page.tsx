@@ -38,7 +38,7 @@ export default function Home() {
     .map(({ name, image, url, type }: Result) => ({ name, image, url, type }))
 
   return (
-    <main className='container flex flex-col items-center justify-center gap-4 md:max-w-[60rem] bg-sky-600 pt-4'>
+    <main className='container flex flex-col items-center justify-center gap-4 md:max-w-[60rem] pt-4'>
       <h1 className='text-xl font-semibold'>Spotify Search</h1>
       <div className='flex items-center justify-center gap-2'>
         <Input
