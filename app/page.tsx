@@ -24,8 +24,6 @@ export default function Home() {
     fetcher
   )
 
-  if (error) return <div>Failed to load. Please try again.</div>
-
   const sortedResults = searchResults?.results
     .map((result: Result) => ({
       ...result,
