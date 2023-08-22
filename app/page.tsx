@@ -19,7 +19,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [searchType, setSearchType] = useState<string>('track')
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
-  const { data: searchResults, error } = useSWR(
+  const { data: searchResults } = useSWR(
     searchQuery ? `/api/search?q=${searchQuery}&type=${searchType}` : null,
     fetcher
   )
@@ -67,49 +67,45 @@ export default function Home() {
           {!sortedResults ? (
             <div>Loading...</div>
           ) : (
-            <>
-              <div
-                className={cn(
-                  'grid grid-cols-2 gap-4 pb-8 md:grid-cols-3 lg:grid-cols-4',
-                  isDropdownOpen ? 'pointer-events-none' : 'pointer-events-auto'
-                )}
-              >
-                {sortedResults.map((result: Result, index: number) => (
-                  <div
-                    key={index}
-                    className='relative flex flex-col rounded-sm bg-accent p-4'
+            <div
+              className={cn(
+                'grid grid-cols-2 gap-4 pb-8 md:grid-cols-3 lg:grid-cols-4',
+                isDropdownOpen ? 'pointer-events-none' : 'pointer-events-auto'
+              )}
+            >
+              {sortedResults.map((result: Result, index: number) => (
+                <div
+                  key={index}
+                  className='relative flex flex-col rounded-sm bg-accent p-4'
+                >
+                  {result.image ? (
+                    <Image
+                      unoptimized
+                      src={result.image}
+                      alt={result.name}
+                      width={640}
+                      height={640}
+                    />
+                  ) : (
+                    <div className='flex h-[180px] w-[180px] items-center justify-center bg-[#E5E9ED]'>
+                      {result.name}
+                    </div>
+                  )}
+                  <p className='pt-4 text-lg font-semibold'>{result.name}</p>
+                  <p className='text-foreground/80'>
+                    {result.type.charAt(0).toUpperCase() + result.type.slice(1)}
+                  </p>
+                  <a
+                    href={result.uri}
+                    target='_blank'
+                    className='absolute inset-0'
+                    onClick={e => e.currentTarget.blur()}
                   >
-                    {result.image ? (
-                      <Image
-                        unoptimized
-                        src={result.image}
-                        alt={result.name}
-                        width={640}
-                        height={640}
-                      />
-                    ) : (
-                      <div className='flex h-[180px] w-[180px] items-center justify-center bg-[#E5E9ED]'>
-                        {result.name}
-                      </div>
-                    )}
-                    <p className='pt-4 text-lg font-semibold'>{result.name}</p>
-                    <p className='text-foreground/80'>
-                      {result.type.charAt(0).toUpperCase() +
-                        result.type.slice(1)}
-                    </p>
-                    <a
-                      href={result.uri}
-                      target='_blank'
-                      className='absolute inset-0'
-                      onClick={e => e.currentTarget.blur()}
-                    >
-                      <span className='sr-only'>Open on Spotify</span>
-                    </a>
-                  </div>
-                ))}
-              </div>
-              {error && <div>Failed to load. Please try again.</div>}
-            </>
+                    <span className='sr-only'>Open on Spotify</span>
+                  </a>
+                </div>
+              ))}
+            </div>
           )}
         </>
       )}
