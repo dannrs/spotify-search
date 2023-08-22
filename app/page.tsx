@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <main className='container flex flex-col items-center justify-center gap-4 pt-4 md:max-w-[60rem]'>
       <h1 className='text-xl font-semibold'>Spotify Search</h1>
-      <div className='flex items-center justify-center gap-2 w-full'>
+      <div className='flex w-full items-center justify-center gap-2'>
         <Input
           type='text'
           placeholder='Search...'
@@ -67,45 +67,49 @@ export default function Home() {
           {!sortedResults ? (
             <div>Loading...</div>
           ) : (
-            <div
-              className={cn(
-                'grid grid-cols-2 gap-4 pb-8 md:grid-cols-3 lg:grid-cols-4',
-                isDropdownOpen ? 'pointer-events-none' : 'pointer-events-auto'
-              )}
-            >
-              {sortedResults.map((result: Result, index: number) => (
-                <div
-                  key={index}
-                  className='relative flex flex-col rounded-sm bg-accent p-4'
-                >
-                  {result.image ? (
-                    <Image
-                      unoptimized
-                      src={result.image}
-                      alt={result.name}
-                      width={640}
-                      height={640}
-                    />
-                  ) : (
-                    <div className='flex justify-center items-center h-[180px] w-[180px] bg-[#E5E9ED]'>
-                      {result.name}
-                    </div>
-                  )}
-                  <p className='pt-4 text-lg font-semibold'>{result.name}</p>
-                  <p className='text-foreground/80'>
-                    {result.type.charAt(0).toUpperCase() + result.type.slice(1)}
-                  </p>
-                  <a
-                    href={result.uri}
-                    target='_blank'
-                    className='absolute inset-0'
-                    onClick={e => e.currentTarget.blur()}
+            <>
+              <div
+                className={cn(
+                  'grid grid-cols-2 gap-4 pb-8 md:grid-cols-3 lg:grid-cols-4',
+                  isDropdownOpen ? 'pointer-events-none' : 'pointer-events-auto'
+                )}
+              >
+                {sortedResults.map((result: Result, index: number) => (
+                  <div
+                    key={index}
+                    className='relative flex flex-col rounded-sm bg-accent p-4'
                   >
-                    <span className='sr-only'>Open on Spotify</span>
-                  </a>
-                </div>
-              ))}
-            </div>
+                    {result.image ? (
+                      <Image
+                        unoptimized
+                        src={result.image}
+                        alt={result.name}
+                        width={640}
+                        height={640}
+                      />
+                    ) : (
+                      <div className='flex h-[180px] w-[180px] items-center justify-center bg-[#E5E9ED]'>
+                        {result.name}
+                      </div>
+                    )}
+                    <p className='pt-4 text-lg font-semibold'>{result.name}</p>
+                    <p className='text-foreground/80'>
+                      {result.type.charAt(0).toUpperCase() +
+                        result.type.slice(1)}
+                    </p>
+                    <a
+                      href={result.uri}
+                      target='_blank'
+                      className='absolute inset-0'
+                      onClick={e => e.currentTarget.blur()}
+                    >
+                      <span className='sr-only'>Open on Spotify</span>
+                    </a>
+                  </div>
+                ))}
+              </div>
+              {error && <div>Failed to load. Please try again.</div>}
+            </>
           )}
         </>
       )}
